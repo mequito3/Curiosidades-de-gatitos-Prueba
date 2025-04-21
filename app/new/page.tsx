@@ -1,6 +1,4 @@
 'use client';
-import Image from 'next/image';
-
 import { useEffect, useState } from 'react';
 
 export default function NewFact() {
@@ -8,7 +6,6 @@ export default function NewFact() {
   const [image, setImage] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
 
-  // Función para obtener una nueva curiosidad
   const fetchData = async () => {
     setLoading(true);
     try {
@@ -17,19 +14,21 @@ export default function NewFact() {
       setFact(data.fact);
 
       const word = data.fact.split(" ")[0].toLowerCase();
-      const imageResponse = await fetch(`https://cataas.com/cat/says/${word}`);
-      const imageData = await imageResponse.json();  // Asegurándonos de obtener la URL correctamente
-      setImage(imageData.url);
+      const imageUrl = `https://cataas.com/cat/says/${word}?size=50&color=white`;
+      setImage(imageUrl);
+    } catch (error) {
+      console.error('Error al obtener datos:', error);
+      setFact('Ocurrió un error al obtener la curiosidad.');
+      setImage(null);
     } finally {
       setLoading(false);
     }
   };
 
   useEffect(() => {
-    fetchData(); // Llamar para obtener una curiosidad al cargar la página
+    fetchData();
   }, []);
 
-  // Guardar la curiosidad en localStorage
   const handleSaveFact = () => {
     if (fact && image) {
       const savedFacts = JSON.parse(localStorage.getItem('savedFacts') || '[]');
@@ -39,7 +38,6 @@ export default function NewFact() {
     }
   };
 
-  // Copiar la curiosidad al portapapeles
   const handleCopyToClipboard = () => {
     if (fact) {
       navigator.clipboard.writeText(fact);
@@ -56,12 +54,10 @@ export default function NewFact() {
       <h1 className="text-3xl sm:text-4xl font-bold text-center mb-6">Nueva curiosidad</h1>
 
       {image && (
-        <Image 
+        <img 
           src={image} 
-          alt="Cat" 
-          className="mb-6 w-40 h-40 sm:w-52 sm:h-52 object-cover rounded-lg shadow-md"
-          width={200} // Ajusta el tamaño según lo necesario
-          height={200} // Ajusta el tamaño según lo necesario
+          alt="Gato"
+          className="mb-6 w-52 h-52 object-cover rounded-lg shadow-md"
         />
       )}
 
@@ -88,7 +84,7 @@ export default function NewFact() {
 
         <button
           className="mt-4 px-6 py-2 bg-purple-600 text-white rounded-full hover:bg-purple-700 transition-colors"
-          onClick={fetchData} // Llamar a fetchData para obtener una nueva curiosidad
+          onClick={fetchData}
         >
           Siguiente curiosidad
         </button>
