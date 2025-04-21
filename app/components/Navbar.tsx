@@ -1,36 +1,9 @@
 'use client';
 
-import { useState, useEffect } from 'react';
 import { usePathname } from 'next/navigation';
 import Link from 'next/link';
 
 export default function Navbar() {
-  const [isDarkMode, setIsDarkMode] = useState(false);
-
-  // Verificar si hay una preferencia de tema en el localStorage
-  useEffect(() => {
-    const savedMode = localStorage.getItem('theme');
-    if (savedMode === 'dark') {
-      setIsDarkMode(true);
-      document.documentElement.classList.add('dark');
-    } else {
-      setIsDarkMode(false);
-      document.documentElement.classList.remove('dark');
-    }
-  }, []);
-
-  // Alternar entre modo claro y oscuro
-  const toggleDarkMode = () => {
-    setIsDarkMode(!isDarkMode);
-    if (isDarkMode) {
-      localStorage.setItem('theme', 'light');
-      document.documentElement.classList.remove('dark');
-    } else {
-      localStorage.setItem('theme', 'dark');
-      document.documentElement.classList.add('dark');
-    }
-  };
-
   const pathname = usePathname();
 
   return (
@@ -57,7 +30,6 @@ export default function Navbar() {
             Mis curiosidades
           </Link>
         </div>
-    
       </nav>
     </header>
   );
