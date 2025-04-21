@@ -18,7 +18,8 @@ export default function NewFact() {
 
       const word = data.fact.split(" ")[0].toLowerCase();
       const imageResponse = await fetch(`https://cataas.com/cat/says/${word}`);
-      setImage(imageResponse.url);
+      const imageData = await imageResponse.json();  // Asegurándonos de obtener la URL correctamente
+      setImage(imageData.url);
     } finally {
       setLoading(false);
     }
@@ -50,8 +51,6 @@ export default function NewFact() {
     return <div className="text-center">Cargando...</div>;
   }
 
-
-
   return (
     <div className="flex flex-col items-center justify-center min-h-screen p-6 sm:p-12 bg-white dark:bg-gray-800 text-gray-900 dark:text-white">
       <h1 className="text-3xl sm:text-4xl font-bold text-center mb-6">Nueva curiosidad</h1>
@@ -61,6 +60,8 @@ export default function NewFact() {
           src={image} 
           alt="Cat" 
           className="mb-6 w-40 h-40 sm:w-52 sm:h-52 object-cover rounded-lg shadow-md"
+          width={200} // Ajusta el tamaño según lo necesario
+          height={200} // Ajusta el tamaño según lo necesario
         />
       )}
 
