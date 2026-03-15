@@ -39,7 +39,7 @@ export default function FactCard({ fact, image, onCopy, onClick }: FactCardProps
 
       <div className="px-1 flex flex-col flex-grow">
         <p className="text-gray-700 dark:text-gray-300 text-base sm:text-lg font-medium leading-relaxed mb-6 line-clamp-4 italic flex-grow">
-          "{fact}"
+          &quot;{fact}&quot;
         </p>
         
         <div className="flex gap-3 mt-auto">

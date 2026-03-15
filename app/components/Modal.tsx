@@ -36,7 +36,7 @@ export default function Modal({ isOpen, onClose, fact, image }: ModalProps) {
         </div>
 
         <p className="text-xl text-gray-700 dark:text-gray-200 font-medium italic mb-8 leading-relaxed text-center">
-          "{fact}"
+          &quot;{fact}&quot;
         </p>
 
         <div className="flex gap-4">

@@ -1,12 +1,12 @@
 'use client';
 
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import { translations, Language } from '@/utils/translations';
+import { translations, Language, Translation } from '@/utils/translations';
 
 interface LanguageContextType {
   language: Language;
   setLanguage: (lang: Language) => void;
-  t: any;
+  t: Translation;
   translate: (text: string) => Promise<string>;
   mounted: boolean;
 }

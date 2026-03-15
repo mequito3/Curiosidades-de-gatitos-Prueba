@@ -1,24 +1,41 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { useLanguage } from '../components/LanguageContext';
 import FactCard from '../components/FactCard'; 
 import Modal from '../components/Modal';
-import { Sparkles, Trash2 } from 'lucide-react';
+import { Trash2 } from 'lucide-react';
 import Link from 'next/link';
 
 export default function MisCuriosidades() {
-  const { t, language } = useLanguage();
-  const [savedFacts, setSavedFacts] = useState<{ fact: string, image: string }[]>([]);
+  const { t, language, mounted } = useLanguage();
+  const [savedFacts, setSavedFacts] = useState<{ fact: string; image: string }[]>([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedFact, setSelectedFact] = useState<{ fact: string, image: string } | null>(null);
-  const [mounted, setMounted] = useState(false);
+  const [selectedFact, setSelectedFact] = useState<{ fact: string; image: string } | null>(null);
 
   useEffect(() => {
-    setMounted(true);
-    const saved = JSON.parse(localStorage.getItem('savedFacts') || '[]');
-    setSavedFacts(saved);
+    if (mounted) {
+      const saved = JSON.parse(localStorage.getItem('savedFacts') || '[]');
+      setSavedFacts(saved);
+    }
+  }, [mounted]);
+
+  const handleOpenModal = useCallback((fact: string, image: string) => {
+    setSelectedFact({ fact, image });
+    setIsModalOpen(true);
   }, []);
+
+  const handleCloseModal = useCallback(() => {
+    setIsModalOpen(false);
+    setSelectedFact(null);
+  }, []);
+
+  const clearAllFacts = useCallback(() => {
+    if (confirm(language === 'es' ? '¿Borrar todo?' : 'Clear all?')) {
+      localStorage.removeItem('savedFacts');
+      setSavedFacts([]);
+    }
+  }, [language]);
 
   if (!mounted) {
     return (
@@ -27,23 +44,6 @@ export default function MisCuriosidades() {
       </div>
     );
   }
-
-  const handleOpenModal = (fact: string, image: string) => {
-    setSelectedFact({ fact, image });
-    setIsModalOpen(true);
-  };
-
-  const handleCloseModal = () => {
-    setIsModalOpen(false);
-    setSelectedFact(null);
-  };
-
-  const clearAllFacts = () => {
-    if (confirm(language === 'es' ? '¿Borrar todo?' : 'Clear all?')) {
-      localStorage.removeItem('savedFacts');
-      setSavedFacts([]);
-    }
-  };
 
   return (
     <div className="min-h-screen bg-[#fafafa] dark:bg-[#0a0a0a] pt-24 sm:pt-32 pb-12 px-4 sm:px-6 relative overflow-hidden">

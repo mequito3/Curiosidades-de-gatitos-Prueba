@@ -51,5 +51,5 @@ export const translations = {
   }
 };
 
+export type Translation = typeof translations.es;
 export type Language = 'es' | 'en';
-export type TranslationKey = keyof typeof translations.es;

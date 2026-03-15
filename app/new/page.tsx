@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { useLanguage } from '../components/LanguageContext';
 import { Sparkles, Save, Copy, RefreshCw, Check } from 'lucide-react';
 import Image from 'next/image';
@@ -14,7 +14,7 @@ export default function NewFact() {
   const [copied, setCopied] = useState(false);
   const [saved, setSaved] = useState(false);
 
-  const fetchData = async () => {
+  const fetchData = useCallback(async () => {
     setLoading(true);
     setSaved(false);
     try {
@@ -35,18 +35,18 @@ export default function NewFact() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [translate, t.common.error]);
 
   useEffect(() => {
     fetchData();
-  }, []);
+  }, [fetchData]);
 
   // Re-translate if language changes
   useEffect(() => {
     if (originalFact) {
       translate(originalFact).then(setFact);
     }
-  }, [language, originalFact]);
+  }, [language, originalFact, translate]);
 
   const handleSaveFact = () => {
     if (fact && image) {
@@ -115,7 +115,7 @@ export default function NewFact() {
             <div className="mb-6 sm:mb-8">
               <span className="text-3xl sm:text-4xl">🐾</span>
               <p className="mt-4 text-lg sm:text-xl md:text-2xl text-gray-700 dark:text-gray-200 font-medium italic leading-relaxed">
-                "{fact}"
+                &quot;{fact}&quot;
               </p>
             </div>
 
