@@ -17,7 +17,7 @@ export default function Navbar() {
   // Return a stable placeholder during server-side rendering or before mounting
   if (!mounted) {
     return (
-      <header className="fixed top-0 left-0 right-0 z-50 bg-[#fafafa]/80 dark:bg-[#0a0a0a]/80 backdrop-blur-xl border-b border-gray-100 dark:border-gray-800 h-20">
+      <header className="fixed top-0 left-0 right-0 z-50 bg-white/80 dark:bg-black/80 backdrop-blur-xl border-b border-gray-100 dark:border-gray-800 h-20">
         <div className="max-w-7xl mx-auto px-6 h-full flex items-center justify-between">
           <div className="flex items-center gap-3">
             <div className="w-12 h-12 sm:w-14 sm:h-14 bg-gray-100 dark:bg-gray-800 rounded-xl" />
@@ -34,10 +34,6 @@ export default function Navbar() {
       ? 'text-blue-600 bg-blue-50 dark:bg-blue-900/20' 
       : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-800'}
   `;
-
-  // Prevent hydration mismatch by using a stable initial state
-  const currentLanguage = mounted ? language : 'es';
-  const currentPathname = mounted ? pathname : '/';
 
   return (
     <header className="fixed top-0 left-0 right-0 z-50 bg-[#fafafa]/80 dark:bg-[#0a0a0a]/80 backdrop-blur-xl border-b border-gray-100 dark:border-gray-800">
@@ -72,13 +68,13 @@ export default function Navbar() {
           <div className="flex bg-gray-100 dark:bg-gray-900 p-1 rounded-2xl border border-gray-200 dark:border-gray-800">
             <button 
               onClick={() => setLanguage('es')}
-              className={`px-4 py-1.5 rounded-xl text-xs font-bold transition-all ${currentLanguage === 'es' ? 'bg-white dark:bg-gray-800 text-blue-600 shadow-sm' : 'text-gray-500 hover:text-gray-900 dark:hover:text-white'}`}
+              className={`px-4 py-1.5 rounded-xl text-xs font-bold transition-all ${language === 'es' ? 'bg-white dark:bg-gray-800 text-blue-600 shadow-sm' : 'text-gray-500 hover:text-gray-900 dark:hover:text-white'}`}
             >
               ES
             </button>
             <button 
               onClick={() => setLanguage('en')}
-              className={`px-4 py-1.5 rounded-xl text-xs font-bold transition-all ${currentLanguage === 'en' ? 'bg-white dark:bg-gray-800 text-blue-600 shadow-sm' : 'text-gray-500 hover:text-gray-900 dark:hover:text-white'}`}
+              className={`px-4 py-1.5 rounded-xl text-xs font-bold transition-all ${language === 'en' ? 'bg-white dark:bg-gray-800 text-blue-600 shadow-sm' : 'text-gray-500 hover:text-gray-900 dark:hover:text-white'}`}
             >
               EN
             </button>
@@ -96,35 +92,41 @@ export default function Navbar() {
 
       {/* Mobile Menu Overlay */}
       {isMenuOpen && (
-        <div className="md:hidden fixed inset-0 z-40 bg-[#fafafa]/80 dark:bg-[#0a0a0a]/80 backdrop-blur-md animate-in fade-in duration-300">
-          <div className="flex flex-col items-center justify-center h-full gap-8 px-6">
+        <div className="md:hidden fixed inset-0 z-40 bg-white/95 dark:bg-black/95 backdrop-blur-2xl animate-in fade-in slide-in-from-top-4 duration-500 flex flex-col pt-24 pb-12 px-8">
+          <div className="flex flex-col gap-6">
             <Link 
               href="/" 
               onClick={closeMenu} 
-              className={`text-3xl font-bold transition-all ${currentPathname === '/' ? 'text-blue-600' : 'text-gray-900 dark:text-white'}`}
+              className={`text-4xl font-bold tracking-tight transition-all active:scale-95 ${pathname === '/' ? 'text-blue-600' : 'text-gray-900 dark:text-white'}`}
             >
               {t.nav.home}
             </Link>
             <Link 
               href="/my-facts" 
               onClick={closeMenu} 
-              className={`text-3xl font-bold transition-all ${currentPathname === '/my-facts' ? 'text-blue-600' : 'text-gray-900 dark:text-white'}`}
+              className={`text-4xl font-bold tracking-tight transition-all active:scale-95 ${pathname === '/my-facts' ? 'text-blue-600' : 'text-gray-900 dark:text-white'}`}
             >
               {t.nav.myFacts}
             </Link>
+          </div>
+          
+          <div className="mt-auto">
+            <div className="h-[1px] w-full bg-gray-100 dark:bg-gray-800 mb-10" />
             
-            <div className="w-20 h-[2px] bg-gray-200 dark:bg-gray-800" />
+            <p className="text-xs font-bold text-gray-400 dark:text-gray-500 uppercase tracking-widest mb-6">
+              {t.nav.language}
+            </p>
             
-            <div className="flex gap-4 w-full max-w-xs transition-opacity duration-300" style={{ opacity: mounted ? 1 : 0.5 }}>
+            <div className="flex gap-4 w-full">
               <button 
                 onClick={() => { setLanguage('es'); closeMenu(); }}
-                className={`flex-1 py-4 rounded-2xl font-bold transition-all active:scale-95 ${currentLanguage === 'es' ? 'bg-blue-600 text-white shadow-xl shadow-blue-500/20' : 'bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400'}`}
+                className={`flex-1 py-4 rounded-2xl font-bold text-lg transition-all active:scale-95 shadow-sm ${language === 'es' ? 'bg-blue-600 text-white shadow-blue-500/20' : 'bg-gray-50 dark:bg-gray-900 text-gray-600 dark:text-gray-400 border border-gray-100 dark:border-gray-800'}`}
               >
                 Español
               </button>
               <button 
                 onClick={() => { setLanguage('en'); closeMenu(); }}
-                className={`flex-1 py-4 rounded-2xl font-bold transition-all active:scale-95 ${currentLanguage === 'en' ? 'bg-blue-600 text-white shadow-xl shadow-blue-500/20' : 'bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400'}`}
+                className={`flex-1 py-4 rounded-2xl font-bold text-lg transition-all active:scale-95 shadow-sm ${language === 'en' ? 'bg-blue-600 text-white shadow-blue-500/20' : 'bg-gray-50 dark:bg-gray-900 text-gray-600 dark:text-gray-400 border border-gray-100 dark:border-gray-800'}`}
               >
                 English
               </button>
@@ -133,9 +135,9 @@ export default function Navbar() {
           
           <button
             onClick={closeMenu}
-            className="absolute top-8 right-8 p-3 text-gray-900 dark:text-white bg-white dark:bg-gray-800 rounded-2xl shadow-lg border border-gray-100 dark:border-gray-700"
+            className="absolute top-6 right-6 p-4 text-gray-900 dark:text-white bg-gray-50 dark:bg-gray-900 rounded-2xl shadow-lg border border-gray-100 dark:border-gray-800 active:scale-90 transition-transform"
           >
-            <X size={28} />
+            <X size={24} />
           </button>
         </div>
       )}

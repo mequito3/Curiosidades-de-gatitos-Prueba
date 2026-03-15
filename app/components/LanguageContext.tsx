@@ -17,18 +17,21 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
   const [language, setLanguage] = useState<Language>('es');
   const [mounted, setMounted] = useState(false);
 
-  // Load preference from localStorage if available
   useEffect(() => {
     setMounted(true);
-    const savedLang = localStorage.getItem('preferredLanguage') as Language;
-    if (savedLang && (savedLang === 'es' || savedLang === 'en')) {
-      setLanguage(savedLang);
+    if (typeof window !== 'undefined') {
+      const savedLang = localStorage.getItem('preferredLanguage') as Language;
+      if (savedLang && (savedLang === 'es' || savedLang === 'en')) {
+        setLanguage(savedLang);
+      }
     }
   }, []);
-// ... remains the same until handleSetLanguage
+
   const handleSetLanguage = (lang: Language) => {
     setLanguage(lang);
-    localStorage.setItem('preferredLanguage', lang);
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('preferredLanguage', lang);
+    }
   };
 
   const t = translations[language];
