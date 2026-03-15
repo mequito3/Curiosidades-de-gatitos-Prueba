@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { Menu, X } from 'lucide-react';
 import { useLanguage } from './LanguageContext';
+import Image from 'next/image';
 
 export default function Navbar() {
   const { language, setLanguage, t, mounted } = useLanguage();
@@ -13,9 +14,23 @@ export default function Navbar() {
 
   const closeMenu = () => setIsMenuOpen(false);
 
+  // Return a stable placeholder during server-side rendering or before mounting
+  if (!mounted) {
+    return (
+      <header className="fixed top-0 left-0 right-0 z-50 bg-[#fafafa]/80 dark:bg-[#0a0a0a]/80 backdrop-blur-xl border-b border-gray-100 dark:border-gray-800 h-20">
+        <div className="max-w-7xl mx-auto px-6 h-full flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <div className="w-12 h-12 sm:w-14 sm:h-14 bg-gray-100 dark:bg-gray-800 rounded-xl" />
+            <div className="h-6 w-24 bg-gray-100 dark:bg-gray-800 rounded-lg" />
+          </div>
+        </div>
+      </header>
+    );
+  }
+
   const navLinkClass = (path: string) => `
     relative px-4 py-2 rounded-xl text-sm font-semibold transition-all duration-300
-    ${(mounted ? pathname : '/') === path 
+    ${pathname === path 
       ? 'text-blue-600 bg-blue-50 dark:bg-blue-900/20' 
       : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-800'}
   `;
@@ -27,11 +42,18 @@ export default function Navbar() {
   return (
     <header className="fixed top-0 left-0 right-0 z-50 bg-[#fafafa]/80 dark:bg-[#0a0a0a]/80 backdrop-blur-xl border-b border-gray-100 dark:border-gray-800">
       <nav className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
-        <Link href="/" className="flex items-center gap-2 group transition-transform active:scale-95">
-          <div className="w-10 h-10 bg-blue-600 rounded-xl flex items-center justify-center text-white shadow-lg shadow-blue-500/20 group-hover:rotate-12 transition-transform">
-            <span className="text-xl font-bold">G</span>
+        <Link href="/" className="flex items-center gap-3 group transition-transform active:scale-95">
+          <div className="relative w-12 h-12 sm:w-14 sm:h-14 overflow-hidden rounded-xl bg-white/50 dark:bg-white/10 p-1 flex items-center justify-center border border-gray-100/50 dark:border-white/10 shadow-lg shadow-black/5">
+            <Image 
+              src="/logo.webp" 
+              alt="Logo" 
+              width={60} 
+              height={60} 
+              className="w-full h-full object-contain group-hover:scale-110 transition-transform duration-500"
+              priority
+            />
           </div>
-          <span className="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-gray-900 to-gray-600 dark:from-white dark:to-gray-400">
+          <span className="text-xl sm:text-2xl font-black bg-clip-text text-transparent bg-gradient-to-r from-gray-900 via-blue-950 to-gray-700 dark:from-white dark:via-blue-100 dark:to-gray-300 tracking-tight">
             Gatitos
           </span>
         </Link>
