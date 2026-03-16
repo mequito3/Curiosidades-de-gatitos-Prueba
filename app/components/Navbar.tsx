@@ -37,21 +37,26 @@ export default function Navbar() {
 
   return (
     <header className="fixed top-0 left-0 right-0 z-50 bg-[#fafafa]/80 dark:bg-[#0a0a0a]/80 backdrop-blur-xl border-b border-gray-100 dark:border-gray-800">
-      <nav className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
-        <Link href="/" className="flex items-center gap-3 group transition-transform active:scale-95">
-          <div className="relative w-12 h-12 sm:w-14 sm:h-14 overflow-hidden rounded-xl bg-white/50 dark:bg-white/10 p-1 flex items-center justify-center border border-gray-100/50 dark:border-white/10 shadow-lg shadow-black/5">
-            <Image 
-              src="/logo.webp" 
-              alt="Logo" 
-              width={60} 
-              height={60} 
-              className="w-full h-full object-contain group-hover:scale-110 transition-transform duration-500"
-              priority
-            />
-          </div>
-          <span className="text-xl sm:text-2xl font-black bg-clip-text text-transparent bg-gradient-to-r from-gray-900 via-blue-950 to-gray-700 dark:from-white dark:via-blue-100 dark:to-gray-300 tracking-tight">
-            Gatitos
-          </span>
+      <nav className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between relative">
+        <Link href="/" className="flex items-center group transition-transform active:scale-95">
+          {/* Logo para fondo claro */}
+          <Image 
+            src="/logo.webp" 
+            alt="Logo" 
+            width={120} 
+            height={120} 
+            className="w-32 h-32 sm:w-44 sm:h-44 object-contain dark:hidden group-hover:scale-105 transition-transform duration-500"
+            priority
+          />
+          {/* Logo para fondo oscuro */}
+          <Image 
+            src="/logo_blanco.png" 
+            alt="Logo" 
+            width={120} 
+            height={120} 
+            className="hidden dark:block w-32 h-32 sm:w-44 sm:h-44 object-contain group-hover:scale-105 transition-transform duration-500"
+            priority
+          />
         </Link>
 
         {/* Desktop Nav */}
